@@ -6,16 +6,16 @@ class Lift(val name:String = "Lift",
            val speed:Long = 1000,
            val maxFloor:Int){
 
-    val liftDoor = Door()
+
 
     val minFloor:Int = 1
-
     val executor = Executors.newSingleThreadExecutor()
+    val liftDoor = Door()
 
+    var isMooving = false
     var observer: LiftObserver? = null
-
     var currentFloor:Int by Delegates.observable(minFloor) {
-                _, _, newValue -> observer?.floorChanged(newValue)
+                _, _, newValue -> observer?.floorChanged(this,newValue)
             }
 
     fun move(floor:Int){
@@ -25,6 +25,7 @@ class Lift(val name:String = "Lift",
             return
 
         executor.execute {
+            isMooving = true
             liftDoor.close()
             lateinit var floorRange:IntProgression
             if(currentFloor - floor > 0){
@@ -38,11 +39,12 @@ class Lift(val name:String = "Lift",
                 currentFloor = i
             }
             liftDoor.open()
+            isMooving = false
             executor.shutdown()
         }
     }
 
 }
 interface LiftObserver{
-    fun floorChanged(newFloor:Int)
+    fun floorChanged(lift:Lift,newFloor:Int)
 }
