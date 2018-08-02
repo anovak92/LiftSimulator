@@ -1,6 +1,10 @@
 import java.util.*
 
-abstract class LiftController:LiftObserver,OnPressedListener
+abstract class LiftController:LiftObserver,OnPressedListener{
+    override fun floorChanged(lift: Lift, newFloor: Int) {
+        println("${lift.name} arrived at $newFloor")
+    }
+}
 
 class SingleLiftController(val lift: Lift): LiftController() {
 
@@ -12,10 +16,6 @@ class SingleLiftController(val lift: Lift): LiftController() {
         lift.move(button.floor)
     }
 
-    override fun floorChanged(lift: Lift,newFloor: Int) {
-        println("${lift.name} arrived on $newFloor")
-    }
-
 }
 
 class MultipleLiftController(): LiftController(){
@@ -24,11 +24,10 @@ class MultipleLiftController(): LiftController(){
 
     fun addLift(lift: Lift){
         liftsArray.add(lift)
+        lift.observer = this
     }
 
-    override fun floorChanged(lift: Lift, newFloor: Int) {
-        println("${lift.name} arrived at $newFloor")
-    }
+
 
     override fun onPressed(button: LiftButton) {
        if(!moveFree(button.floor))
