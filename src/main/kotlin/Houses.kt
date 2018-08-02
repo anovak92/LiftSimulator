@@ -1,7 +1,13 @@
 
-class OneLiftHouse(val maxFloor:Int) {
+abstract class House(val maxFloor: Int){
 
     val minFloor:Int = 1
+
+    abstract fun callForLift(floor:Int)
+
+}
+
+class OneLiftHouse(maxFloor:Int):House(maxFloor) {
 
     val lift = Lift(maxFloor = maxFloor)
     val liftController = LiftController(lift)
@@ -15,7 +21,7 @@ class OneLiftHouse(val maxFloor:Int) {
         println(floorButtons.count())
     }
 
-    fun callForLift(floor:Int){
+    override fun callForLift(floor:Int){
         if(floor > maxFloor || floor < minFloor)
             throw IllegalArgumentException("Wrong floor: $floor!")
 
