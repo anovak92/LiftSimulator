@@ -10,7 +10,7 @@ abstract class House(val maxFloor: Int){
 
         floorButtons[floor-1].press()
     }
-
+    abstract fun shutdownLifts()
 }
 
 class OneLiftHouse(maxFloor:Int):House(maxFloor) {
@@ -22,6 +22,10 @@ class OneLiftHouse(maxFloor:Int):House(maxFloor) {
         floorButtons.onEach {
             it.onPressedListener = liftController
         }
+    }
+
+    override fun shutdownLifts() {
+        lift.shutdown()
     }
 }
 
@@ -38,5 +42,10 @@ class TwoLiftHouse(maxFloor: Int):House(maxFloor){
         floorButtons.onEach {
             it.onPressedListener = liftController
         }
+    }
+
+    override fun shutdownLifts() {
+        smallLift.shutdown()
+        mediumLift.shutdown()
     }
 }

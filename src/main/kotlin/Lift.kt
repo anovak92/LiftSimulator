@@ -19,13 +19,17 @@ class Lift(val name:String = "Lift",
             }
 
     fun move(floor:Int){
-        if(floor > maxFloor)
+        isMooving = true
+        if(floor > maxFloor) {
+            isMooving = false
             throw IllegalArgumentException("Max floor = $maxFloor, asked to move $floor")
-        if(floor == currentFloor)
+        }
+        if(floor == currentFloor){
+            isMooving = false
             return
+        }
 
-        executor.execute {
-            isMooving = true
+        executor.execute{
             liftDoor.close()
             lateinit var floorRange:IntProgression
             if(currentFloor - floor > 0){
@@ -40,11 +44,14 @@ class Lift(val name:String = "Lift",
             }
             liftDoor.open()
             isMooving = false
-            executor.shutdown()
         }
     }
 
+    fun shutdown(){
+        executor.shutdown()
+    }
 }
+
 interface LiftObserver{
     fun floorChanged(lift:Lift,newFloor:Int)
 }

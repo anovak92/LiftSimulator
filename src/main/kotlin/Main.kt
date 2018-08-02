@@ -11,4 +11,6 @@ fun main(args:Array<String>){
     twoLiftHouse.callForLift(2)
     twoLiftHouse.callForLift(10)
 
+    twoLiftHouse.shutdownLifts()
+
 }
