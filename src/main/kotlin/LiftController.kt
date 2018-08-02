@@ -9,7 +9,7 @@ class LiftController(val lift: Lift): LiftObserver, OnPressedListener {
     }
 
     override fun floorChanged(newFloor: Int) {
-        println("Lift arrived on $newFloor")
+        println("${lift.name} arrived on $newFloor")
     }
 
 }

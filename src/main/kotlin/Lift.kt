@@ -1,7 +1,8 @@
 import java.util.concurrent.Executors
 import kotlin.properties.Delegates
 
-class Lift(val capacity:Int = 4,
+class Lift(val name:String = "Lift",
+           val capacity:Int = 4,
            val speed:Long = 1000,
            val maxFloor:Int){
 
