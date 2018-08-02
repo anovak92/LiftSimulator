@@ -5,6 +5,8 @@ class Lift(val capacity:Int = 4,
            val speed:Long = 1000,
            val maxFloor:Int){
 
+    val liftDoor = Door()
+
     val minFloor:Int = 1
 
     val executor = Executors.newSingleThreadExecutor()
@@ -19,9 +21,10 @@ class Lift(val capacity:Int = 4,
         if(floor > maxFloor)
             throw IllegalArgumentException("Max floor = $maxFloor, asked to move $floor")
         if(floor == currentFloor)
-            return;
+            return
 
         executor.execute {
+            liftDoor.close()
             lateinit var floorRange:IntProgression
             if(currentFloor - floor > 0){
                 floorRange = (currentFloor - 1) downTo floor
@@ -33,10 +36,10 @@ class Lift(val capacity:Int = 4,
                 Thread.sleep(speed)
                 currentFloor = i
             }
-
+            liftDoor.open()
+            executor.shutdown()
         }
     }
-
 
 }
 interface LiftObserver{
